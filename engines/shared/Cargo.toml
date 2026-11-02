@@ -1,0 +1,23 @@
+[package]
+name = "engine-shared"
+version = "1.1.0"
+edition = "2021"
+description = "Shared FFI protocol, error model, binary helpers and RNG backend for all Dev Toolbox WASM engines."
+
+[lib]
+crate-type = ["rlib"]
+
+[dependencies]
+serde = { version = "1.0", default-features = false, features = ["alloc", "derive", "std"] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc", "std"] }
+base64 = { version = "0.22", default-features = false, features = ["alloc", "std"] }
+rand_core = { version = "0.6", default-features = false }
+rand_chacha = { version = "0.3", default-features = false }
+sha2 = { version = "0.10", default-features = false }
+# getrandom 0.2 (rand_core 0.6 ecosystem) is routed through the `custom` feature.
+# getrandom 0.3 / 0.4 (newer crates) are routed through the `__getrandom_v03_custom`
+# symbol exported from `rng.rs` when compiled with `--cfg getrandom_backend="custom"`.
+getrandom02 = { package = "getrandom", version = "0.2", features = ["custom"] }
+
+[lints]
+workspace = true

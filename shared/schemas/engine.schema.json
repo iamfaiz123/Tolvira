@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EngineManifest",
+  "type": "object",
+  "required": ["id", "name", "version", "type", "url"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "type": { "type": "string", "enum": ["wasm", "js", "webgl", "webgpu"] },
+    "url": { "type": "string" },
+    "glue": { "type": "string" },
+    "worker": { "type": "string" },
+    "hash": { "type": "string" },
+    "size": { "type": "integer" },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
+

@@ -1,0 +1,19 @@
+[package]
+name = "csv-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox CSV engine: parse/inspect, clean, validate, convert delimiters & encodings, merge/split/dedupe, column ops, filter/sort, SQL/JSONL/Markdown export, statistics, transpose and diff."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+tabular-core = { path = "../tabular" }
+
+[dev-dependencies]
+serde_json = "1.0"
+
+[lints]
+workspace = true

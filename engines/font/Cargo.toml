@@ -1,0 +1,21 @@
+[package]
+name = "font-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox font engine: TTF/OTF/WOFF metadata, character map, text preview rendering, size checks, pairing suggestions, WOFF1↔TTF conversion and glyph subsetting."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+ttf-parser = "0.25"
+ab_glyph = "0.2"
+image = { version = "0.25", default-features = false, features = ["png"] }
+flate2 = { version = "1", default-features = false, features = ["rust_backend"] }
+subsetter = "0.2"
+
+[lints]
+workspace = true

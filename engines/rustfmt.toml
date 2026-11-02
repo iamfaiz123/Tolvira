@@ -1,0 +1,55 @@
+# rustfmt configuration for the engine workspace.
+#
+# Only *stable* options are enabled so that `cargo fmt --all` works on the
+# stable toolchain that CI uses. The nightly-only options we would like to use
+# are listed (commented out) at the bottom; run
+# `cargo +nightly fmt --all -- --config-path rustfmt.nightly.toml` locally if
+# you want them.
+#
+# Formatting is enforced by `cargo fmt --all -- --check` (see CONTRIBUTING.md).
+
+edition = "2021"
+style_edition = "2021"
+
+# Layout ------------------------------------------------------------------
+max_width = 100
+hard_tabs = false
+tab_spaces = 4
+newline_style = "Unix"
+use_small_heuristics = "Default"
+fn_call_width = 80
+chain_width = 70
+struct_lit_width = 40
+array_width = 80
+attr_fn_like_width = 80
+single_line_if_else_max_width = 60
+
+# Items -------------------------------------------------------------------
+fn_params_layout = "Tall"
+match_block_trailing_comma = true
+match_arm_leading_pipes = "Never"
+merge_derives = true
+remove_nested_parens = true
+reorder_imports = true
+reorder_modules = true
+use_field_init_shorthand = true
+use_try_shorthand = true
+force_explicit_abi = true
+short_array_element_width_threshold = 10
+
+# Nightly-only (kept for reference; enabled in rustfmt.nightly.toml) ------
+# brace_style = "SameLineWhere"
+# control_brace_style = "AlwaysSameLine"
+# empty_item_single_line = true
+# struct_field_align_threshold = 0
+# imports_granularity = "Module"
+# group_imports = "StdExternalCrate"
+# wrap_comments = true
+# comment_width = 100
+# normalize_comments = true
+# normalize_doc_attributes = true
+# format_code_in_doc_comments = true
+# doc_comment_code_block_width = 80
+# hex_literal_case = "Lower"
+# condense_wildcard_suffixes = true
+# overflow_delimited_expr = true

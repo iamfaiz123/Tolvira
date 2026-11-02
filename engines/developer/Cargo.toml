@@ -1,0 +1,30 @@
+[package]
+name = "developer-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox developer engine: regex, cron, semver, colours, SQL/GraphQL/HTML/CSS/JS formatting, linters (markdown, dockerfile, yaml, compose), .env, diff/patch, chmod, MIME & HTTP lookups, user-agent, URL/query parsing, HTML→JSX."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+fancy-regex = "0.14"
+regex-syntax = "0.8"
+cron = "0.15"
+chrono = { version = "0.4", default-features = false, features = ["alloc"] }
+semver = "1.0"
+sqlformat = "0.3"
+sqlparser = { version = "0.55", features = ["visitor"] }
+graphql-parser = "0.4"
+serde_yaml = "0.9"
+similar = { version = "2.6", features = ["inline"] }
+url = "2.5"
+percent-encoding = "2.3"
+idna = "1"
+color-core = { path = "../colorcore" }
+
+[lints]
+workspace = true

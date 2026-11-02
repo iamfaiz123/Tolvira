@@ -1,0 +1,21 @@
+[package]
+name = "colordesign-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox colour & design engine: colour conversions, palettes, CSS gradients, WCAG contrast & accessible pairs, colour-blindness simulation, image palette extraction, shadow/border-radius/spacing/typography scale generators, CSS unit conversion, favicon previews, social image dimensions."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+color-core = { path = "../colorcore" }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp", "ico"] }
+
+[dev-dependencies]
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,71 @@
+[workspace]
+members = [
+    "shared",
+    "text",
+    "pdf",
+    "image",
+    "video",
+    "audio",
+    "search",
+    "archive",
+    "json",
+    "crypto",
+    "encoding",
+    "math",
+    "units",
+    "datetime",
+    "finance",
+    "indiatax",
+    "construction",
+    "solar",
+    "business",
+    "tabular",
+    "csv",
+    "spreadsheet",
+    "developer",
+    "qrbarcode",
+    "geo",
+    "colorcore",
+    "colordesign",
+    "dataviz",
+    "document",
+    "font",
+    "mesh3d",
+]
+resolver = "2"
+
+# Lints shared by every engine crate (`[lints] workspace = true` in each
+# member). Production code must never panic: a panic inside the WASM module
+# aborts the whole instance (`panic = "abort"`) and takes the tool down with
+# it, so `unwrap`/`expect`/`panic!` are hard errors outside of tests
+# (see `clippy.toml` for the test exemptions).
+[workspace.lints.rust]
+missing_docs = "warn"
+unsafe_op_in_unsafe_fn = "warn"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+unreachable = "deny"
+unimplemented = "deny"
+todo = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+# Style allowances for calculator-heavy numeric code.
+too_many_arguments = "allow"
+large_enum_variant = "allow"
+type_complexity = "allow"
+needless_range_loop = "allow"
+should_implement_trait = "allow"
+if_same_then_else = "allow"
+neg_cmp_op_on_partial_ord = "allow"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+

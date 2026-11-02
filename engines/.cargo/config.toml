@@ -1,0 +1,11 @@
+# Engines are compiled for `wasm32-unknown-unknown` and instantiated by the
+# frontend worker with NO JavaScript imports (only `env.abort`).
+#
+# Crates that need OS randomness (rand, uuid, aes-gcm nonces, lopdf ids, zip
+# AES salts, ...) would normally require the `wasm_js` backend, which imports
+# JS functions and breaks that contract. Instead, every engine links the
+# `engine-shared` crate which provides a custom `getrandom` backend backed by a
+# ChaCha20 CSPRNG that is (re)seeded from caller supplied entropy
+# (`payload.entropy`, base64, from `crypto.getRandomValues`).
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="custom"']

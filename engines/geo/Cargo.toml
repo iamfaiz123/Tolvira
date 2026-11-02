@@ -1,0 +1,18 @@
+[package]
+name = "geo-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox GIS engine: GeoJSON format/validate/bbox/simplify, GeoJSON↔CSV/KML/WKT, coordinate format conversion (DD/DMS/UTM/MGRS-lite/geohash), geodesic distance & bearing, polygon area/perimeter/centroid."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+tabular-core = { path = "../tabular" }
+quick-xml = "0.37"
+
+[lints]
+workspace = true

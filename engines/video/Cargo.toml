@@ -1,0 +1,22 @@
+[package]
+name = "video-engine"
+version = "2.0.0"
+edition = "2021"
+description = "Dev Toolbox video engine: MP4/MOV/MKV/WebM inspection, lossless MP4 trim/split/mute/audio-track extraction (no re-encode), GIF assembly from frames, subtitle parse/convert/shift, and bitrate/frame/aspect calculators. Transcoding/filters are delegated to the browser (WebCodecs) or backend ffmpeg."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+mp4 = "0.14"
+matroska = "0.27"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp"] }
+
+[dev-dependencies]
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[lints]
+workspace = true

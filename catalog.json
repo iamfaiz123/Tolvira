@@ -1,0 +1,1689 @@
+{
+    "schema_version": "1.0.0",
+    "catalog_name": "Universal Tools Platform - Engine and Tool Implementation Inventory",
+    "generated_for": "Existing frontend, backend, engine registry and on-demand WASM distribution architecture",
+    "design_principles": [
+        "One reusable engine may implement multiple tools.",
+        "Do not create one WASM binary per utility.",
+        "Use JavaScript/browser APIs for lightweight or browser-native functionality.",
+        "Use backend services only where browser sandbox, external network access, large models or security requirements demand it.",
+        "All tool IDs are stable kebab-case identifiers and should be reconciled with the project's existing registry before implementation."
+    ],
+    "runtime_types": [
+        "wasm",
+        "javascript",
+        "backend"
+    ],
+    "priority_definitions": {
+        "P0": "Core platform engines; implement first",
+        "P1": "High-value general-purpose engines; implement next",
+        "P2": "Specialized engines; implement after demand validation"
+    },
+    "engines": [
+        {
+            "engine_id": "pdf",
+            "name": "PDF Engine",
+            "runtime": "wasm",
+            "priority": "P0",
+            "capabilities": [
+                "parse",
+                "render",
+                "modify",
+                "generate",
+                "inspect"
+            ],
+            "tools": [
+                "pdf-merge",
+                "pdf-split",
+                "pdf-compress",
+                "pdf-rotate",
+                "pdf-crop",
+                "pdf-reorder-pages",
+                "pdf-delete-pages",
+                "pdf-extract-pages",
+                "pdf-duplicate-pages",
+                "pdf-add-page-numbers",
+                "pdf-add-watermark",
+                "pdf-add-header-footer",
+                "pdf-protect",
+                "pdf-unlock",
+                "pdf-permission-inspector",
+                "pdf-metadata-viewer",
+                "pdf-edit-metadata",
+                "pdf-repair",
+                "pdf-to-images",
+                "pdf-to-text",
+                "pdf-to-html",
+                "pdf-to-svg",
+                "pdf-to-docx",
+                "images-to-pdf",
+                "text-to-pdf",
+                "html-to-pdf",
+                "markdown-to-pdf",
+                "pdf-compare",
+                "pdf-overlay",
+                "pdf-stamp",
+                "pdf-forms-fill",
+                "pdf-form-field-inspector",
+                "pdf-bookmark-editor",
+                "pdf-outline-extractor",
+                "pdf-page-size-checker",
+                "pdf-grayscale",
+                "pdf-linearize",
+                "pdf-redact",
+                "pdf-signature-inspector"
+            ],
+            "rust_crates_candidates": [
+                "lopdf",
+                "pdfium-render (requires compatible native/WASM strategy)",
+                "printpdf",
+                "image"
+            ],
+            "notes": "Validate crate WASM compatibility. Some rendering, OCR, signing and repair workflows may need separate engines or browser APIs."
+        },
+        {
+            "engine_id": "image",
+            "name": "Image Processing Engine",
+            "runtime": "wasm",
+            "priority": "P0",
+            "capabilities": [
+                "decode",
+                "encode",
+                "transform",
+                "optimize",
+                "inspect"
+            ],
+            "tools": [
+                "image-resize",
+                "image-crop",
+                "image-compress",
+                "image-convert",
+                "image-rotate",
+                "image-flip",
+                "image-watermark",
+                "image-round-corners",
+                "image-grayscale",
+                "image-blur",
+                "image-sharpen",
+                "image-brightness",
+                "image-contrast",
+                "image-saturation",
+                "image-hue",
+                "image-invert",
+                "image-pixelate",
+                "image-add-border",
+                "image-remove-border",
+                "image-metadata-viewer",
+                "image-strip-metadata",
+                "image-dpi-changer",
+                "image-color-extractor",
+                "image-palette-generator",
+                "image-dominant-color",
+                "image-average-color",
+                "image-dimensions",
+                "image-base64",
+                "base64-to-image",
+                "svg-optimizer",
+                "svg-to-png",
+                "svg-to-jpeg",
+                "png-to-webp",
+                "jpeg-to-webp",
+                "webp-to-png",
+                "heic-converter",
+                "avif-converter",
+                "gif-frame-extractor",
+                "gif-resizer",
+                "image-sprite-generator",
+                "image-difference",
+                "image-overlay",
+                "image-mosaic",
+                "image-contact-sheet",
+                "favicon-generator",
+                "og-image-generator"
+            ],
+            "rust_crates_candidates": [
+                "image",
+                "fast_image_resize",
+                "oxipng",
+                "webp",
+                "resvg",
+                "tiny-skia"
+            ],
+            "notes": "Prefer Canvas/WebCodecs for browser-native decode/encode where appropriate; check format support and licensing."
+        },
+        {
+            "engine_id": "ocr",
+            "name": "OCR and Document Recognition Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "recognize-text",
+                "layout-analysis",
+                "document-structure"
+            ],
+            "tools": [
+                "image-to-text-ocr",
+                "pdf-ocr",
+                "receipt-ocr",
+                "business-card-ocr",
+                "table-ocr",
+                "handwriting-ocr",
+                "qr-and-barcode-ocr"
+            ],
+            "rust_crates_candidates": [
+                "tesseract-wasm integration",
+                "ort/ONNX Runtime Web integration"
+            ],
+            "notes": "Model files are large; distribute separately and lazy-load language packs. Handwriting quality varies."
+        },
+        {
+            "engine_id": "video",
+            "name": "Video Processing Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "demux",
+                "mux",
+                "transcode",
+                "filter",
+                "inspect"
+            ],
+            "tools": [
+                "video-trim",
+                "video-cut",
+                "video-merge",
+                "video-concat",
+                "video-compress",
+                "video-convert",
+                "video-resize",
+                "video-crop",
+                "video-rotate",
+                "video-flip",
+                "video-mute",
+                "video-extract-audio",
+                "video-extract-frames",
+                "video-thumbnail",
+                "video-gif",
+                "video-to-webp",
+                "video-speed",
+                "video-reverse",
+                "video-volume",
+                "video-watermark",
+                "video-subtitle-burn",
+                "video-subtitle-extract",
+                "video-metadata",
+                "video-resolution-check",
+                "video-frame-rate-check",
+                "video-aspect-ratio",
+                "video-remove-audio",
+                "video-loop",
+                "video-split",
+                "video-contact-sheet"
+            ],
+            "rust_crates_candidates": [
+                "ffmpeg.wasm integration",
+                "mp4",
+                "webm"
+            ],
+            "notes": "Likely use FFmpeg compiled to WASM or WebCodecs where supported. Codec support, memory and licensing must be documented."
+        },
+        {
+            "engine_id": "audio",
+            "name": "Audio Processing Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "decode",
+                "encode",
+                "resample",
+                "filter",
+                "analyze"
+            ],
+            "tools": [
+                "audio-trim",
+                "audio-cut",
+                "audio-merge",
+                "audio-concat",
+                "audio-compress",
+                "audio-convert",
+                "audio-normalize",
+                "audio-volume",
+                "audio-fade-in",
+                "audio-fade-out",
+                "audio-reverse",
+                "audio-speed",
+                "audio-pitch",
+                "audio-noise-reduction",
+                "audio-silence-removal",
+                "audio-extract-from-video",
+                "audio-to-video",
+                "audio-waveform",
+                "audio-spectrum",
+                "audio-metadata",
+                "audio-duration",
+                "audio-sample-rate-converter",
+                "audio-channel-converter",
+                "audio-mono-stereo",
+                "audio-loop",
+                "audio-split",
+                "audio-join",
+                "audio-visualizer",
+                "audio-equalizer",
+                "audio-bass-boost",
+                "audio-treble-boost",
+                "audio-tone-generator"
+            ],
+            "rust_crates_candidates": [
+                "symphonia",
+                "rubato",
+                "hound",
+                "dasp"
+            ],
+            "notes": "Browser Web Audio API may be better for interactive playback and simple effects."
+        },
+        {
+            "engine_id": "archive",
+            "name": "Archive and Compression Engine",
+            "runtime": "wasm",
+            "priority": "P0",
+            "capabilities": [
+                "archive",
+                "extract",
+                "compress",
+                "inspect"
+            ],
+            "tools": [
+                "zip-create",
+                "zip-extract",
+                "zip-view",
+                "zip-repair",
+                "zip-password-check",
+                "tar-create",
+                "tar-extract",
+                "gzip-compress",
+                "gzip-decompress",
+                "7z-extract",
+                "rar-extract",
+                "file-archive-converter",
+                "archive-list-files",
+                "archive-test-integrity"
+            ],
+            "rust_crates_candidates": [
+                "zip",
+                "tar",
+                "flate2",
+                "zstd",
+                "lz4_flex"
+            ],
+            "notes": "Password-protected and proprietary archive formats may have compatibility/licensing constraints."
+        },
+        {
+            "engine_id": "text",
+            "name": "Text Processing Engine",
+            "runtime": "wasm",
+            "priority": "P0",
+            "capabilities": [
+                "transform",
+                "compare",
+                "analyze",
+                "format"
+            ],
+            "tools": [
+                "word-counter",
+                "character-counter",
+                "line-counter",
+                "sentence-counter",
+                "reading-time",
+                "text-case-converter",
+                "uppercase-converter",
+                "lowercase-converter",
+                "title-case-converter",
+                "slug-generator",
+                "text-reverser",
+                "text-sort-lines",
+                "text-deduplicator",
+                "remove-empty-lines",
+                "remove-extra-spaces",
+                "find-and-replace",
+                "text-diff",
+                "text-compare",
+                "text-to-speech-prep",
+                "lorem-ipsum-generator",
+                "random-text-generator",
+                "text-formatter",
+                "text-cleaner",
+                "unicode-inspector",
+                "unicode-normalizer",
+                "ascii-converter",
+                "rot13",
+                "morse-code-converter",
+                "text-to-binary",
+                "binary-to-text",
+                "text-to-hex",
+                "hex-to-text",
+                "text-to-decimal",
+                "text-joiner",
+                "text-splitter",
+                "text-truncator",
+                "text-extractor",
+                "markdown-to-html",
+                "html-to-markdown",
+                "markdown-preview-parser"
+            ],
+            "rust_crates_candidates": [
+                "regex",
+                "unicode-segmentation",
+                "pulldown-cmark",
+                "comrak"
+            ],
+            "notes": "Small text utilities may be simpler and faster as JavaScript; WASM is optional."
+        },
+        {
+            "engine_id": "json",
+            "name": "JSON and Structured Data Engine",
+            "runtime": "wasm",
+            "priority": "P0",
+            "capabilities": [
+                "parse",
+                "validate",
+                "transform",
+                "query"
+            ],
+            "tools": [
+                "json-formatter",
+                "json-minifier",
+                "json-validator",
+                "json-to-csv",
+                "csv-to-json",
+                "json-to-xml",
+                "xml-to-json",
+                "json-to-yaml",
+                "yaml-to-json",
+                "json-to-toml",
+                "json-to-typescript",
+                "json-to-rust-struct",
+                "json-to-go-struct",
+                "json-diff",
+                "json-compare",
+                "json-path-query",
+                "json-schema-validator",
+                "json-schema-generator",
+                "json-escape",
+                "json-unescape",
+                "json-array-sorter",
+                "json-key-sorter",
+                "json-flattener",
+                "json-unflattener",
+                "json-to-table"
+            ],
+            "rust_crates_candidates": [
+                "serde_json",
+                "serde_yaml",
+                "quick-xml",
+                "toml",
+                "jsonschema"
+            ],
+            "notes": "A JavaScript implementation is often sufficient; use WASM for large documents or shared Rust parsing."
+        },
+        {
+            "engine_id": "csv",
+            "name": "CSV and Delimited Data Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "parse",
+                "transform",
+                "validate",
+                "analyze"
+            ],
+            "tools": [
+                "csv-viewer",
+                "csv-editor",
+                "csv-cleaner",
+                "csv-validator",
+                "csv-to-excel",
+                "excel-to-csv",
+                "csv-to-tsv",
+                "tsv-to-csv",
+                "csv-merge",
+                "csv-split",
+                "csv-deduplicator",
+                "csv-column-extractor",
+                "csv-column-reorder",
+                "csv-filter",
+                "csv-sort",
+                "csv-to-sql",
+                "csv-to-jsonl",
+                "jsonl-to-csv",
+                "csv-statistics",
+                "csv-transpose",
+                "csv-compare",
+                "csv-diff",
+                "csv-encoding-converter"
+            ],
+            "rust_crates_candidates": [
+                "csv",
+                "polars (size-sensitive)",
+                "arrow"
+            ],
+            "notes": "Use streaming/chunked parsing for large files; avoid loading whole datasets into memory."
+        },
+        {
+            "engine_id": "spreadsheet",
+            "name": "Spreadsheet Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "read",
+                "write",
+                "transform",
+                "calculate"
+            ],
+            "tools": [
+                "xlsx-viewer",
+                "xlsx-to-csv",
+                "csv-to-xlsx",
+                "xlsx-to-pdf",
+                "xlsx-to-json",
+                "json-to-xlsx",
+                "xlsx-merge",
+                "xlsx-split-sheets",
+                "xlsx-remove-duplicates",
+                "xlsx-cleaner",
+                "xlsx-formula-inspector",
+                "xlsx-diff",
+                "ods-to-xlsx",
+                "xlsx-to-ods",
+                "spreadsheet-column-letter",
+                "spreadsheet-formula-evaluator"
+            ],
+            "rust_crates_candidates": [
+                "calamine",
+                "rust_xlsxwriter",
+                "umya-spreadsheet"
+            ],
+            "notes": "Complex Excel formulas, macros, charts and pivot tables may not be fully supported."
+        },
+        {
+            "engine_id": "xml_yaml_toml",
+            "name": "Markup and Configuration Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "parse",
+                "format",
+                "validate",
+                "convert"
+            ],
+            "tools": [
+                "xml-formatter",
+                "xml-minifier",
+                "xml-validator",
+                "xml-to-json",
+                "json-to-xml",
+                "yaml-formatter",
+                "yaml-validator",
+                "yaml-to-json",
+                "json-to-yaml",
+                "toml-formatter",
+                "toml-validator",
+                "toml-to-json",
+                "ini-formatter",
+                "ini-to-json",
+                "plist-viewer"
+            ],
+            "rust_crates_candidates": [
+                "quick-xml",
+                "serde_yaml",
+                "toml",
+                "configparser"
+            ],
+            "notes": "Keep parsers strict and report line/column diagnostics when available."
+        },
+        {
+            "engine_id": "crypto",
+            "name": "Cryptography and Hashing Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "hash",
+                "encode",
+                "decode",
+                "sign",
+                "verify"
+            ],
+            "tools": [
+                "md5-generator",
+                "sha1-generator",
+                "sha256-generator",
+                "sha512-generator",
+                "sha3-generator",
+                "blake3-generator",
+                "hmac-generator",
+                "hmac-verifier",
+                "bcrypt-hash-generator",
+                "argon2-hash-generator",
+                "password-generator",
+                "password-strength-checker",
+                "uuid-generator",
+                "ulid-generator",
+                "jwt-decoder",
+                "jwt-inspector",
+                "base64-encoder",
+                "base64-decoder",
+                "url-encoder",
+                "url-decoder",
+                "html-encoder",
+                "html-decoder",
+                "hex-encoder",
+                "hex-decoder",
+                "aes-encrypt-decrypt",
+                "rsa-key-generator",
+                "rsa-sign-verify",
+                "pem-parser",
+                "certificate-decoder"
+            ],
+            "rust_crates_candidates": [
+                "sha2",
+                "sha3",
+                "blake3",
+                "hmac",
+                "uuid",
+                "base64",
+                "ring",
+                "aes-gcm"
+            ],
+            "notes": "Use Web Crypto API for security-sensitive browser cryptography where appropriate. Never claim password storage security from a client-only demo."
+        },
+        {
+            "engine_id": "encoding",
+            "name": "Encoding and Serialization Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "encode",
+                "decode",
+                "serialize"
+            ],
+            "tools": [
+                "url-encode-decode",
+                "base64-encode-decode",
+                "html-entity-encode-decode",
+                "unicode-encode-decode",
+                "punycode-converter",
+                "quoted-printable-converter",
+                "mime-word-decoder",
+                "protobuf-inspector",
+                "messagepack-converter",
+                "cbor-viewer"
+            ],
+            "rust_crates_candidates": [
+                "base64",
+                "percent-encoding",
+                "encoding_rs",
+                "prost",
+                "rmp-serde",
+                "ciborium"
+            ],
+            "notes": "Many operations can be native JavaScript; keep one shared implementation contract."
+        },
+        {
+            "engine_id": "developer",
+            "name": "Developer Utilities Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "parse",
+                "format",
+                "validate",
+                "generate"
+            ],
+            "tools": [
+                "regex-tester",
+                "regex-explainer",
+                "cron-expression-parser",
+                "cron-expression-generator",
+                "semver-checker",
+                "color-code-converter",
+                "sql-formatter",
+                "sql-minifier",
+                "sql-validator",
+                "sql-to-entity-diagram",
+                "graphql-formatter",
+                "graphql-validator",
+                "graphql-schema-viewer",
+                "html-formatter",
+                "html-minifier",
+                "css-formatter",
+                "css-minifier",
+                "javascript-formatter",
+                "javascript-minifier",
+                "typescript-formatter",
+                "typescript-to-javascript",
+                "markdown-linter",
+                "dockerfile-linter",
+                "yaml-linter",
+                "gitignore-generator",
+                "docker-compose-validator",
+                "env-file-parser",
+                "diff-viewer",
+                "patch-parser",
+                "chmod-calculator",
+                "mime-type-lookup",
+                "http-status-lookup",
+                "user-agent-parser",
+                "url-parser",
+                "query-string-parser",
+                "html-to-jsx",
+                "json-to-code"
+            ],
+            "rust_crates_candidates": [
+                "tree-sitter",
+                "sqlparser",
+                "graphql-parser",
+                "regex",
+                "minijinja"
+            ],
+            "notes": "Use language-specific parsers rather than regex-only transformations for correctness."
+        },
+        {
+            "engine_id": "code_analysis",
+            "name": "Code Parsing and Analysis Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "analyze",
+                "format",
+                "transform"
+            ],
+            "tools": [
+                "code-complexity-analyzer",
+                "code-line-counter",
+                "code-minifier",
+                "code-beautifier",
+                "code-diff",
+                "code-duplicate-detector",
+                "import-sorter",
+                "unused-import-checker",
+                "dependency-license-scanner",
+                "sql-query-analyzer",
+                "rust-code-playground",
+                "javascript-sandbox",
+                "html-css-js-playground"
+            ],
+            "rust_crates_candidates": [
+                "tree-sitter",
+                "swc",
+                "oxc"
+            ],
+            "notes": "Sandbox execution must be isolated; do not execute untrusted code in the main page context."
+        },
+        {
+            "engine_id": "math",
+            "name": "Math and Scientific Computation Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "calculate",
+                "solve",
+                "analyze",
+                "plot-data"
+            ],
+            "tools": [
+                "scientific-calculator",
+                "fraction-calculator",
+                "percentage-calculator",
+                "ratio-calculator",
+                "average-calculator",
+                "standard-deviation-calculator",
+                "variance-calculator",
+                "prime-number-checker",
+                "prime-factorization",
+                "gcd-calculator",
+                "lcm-calculator",
+                "quadratic-equation-solver",
+                "linear-equation-solver",
+                "matrix-calculator",
+                "matrix-determinant",
+                "matrix-inverse",
+                "unit-circle-calculator",
+                "trigonometry-calculator",
+                "logarithm-calculator",
+                "exponent-calculator",
+                "permutation-calculator",
+                "combination-calculator",
+                "probability-calculator",
+                "statistics-calculator",
+                "random-number-generator",
+                "sequence-generator",
+                "base-converter",
+                "binary-calculator",
+                "roman-numeral-converter",
+                "number-to-words",
+                "equation-graph-data"
+            ],
+            "rust_crates_candidates": [
+                "num-bigint",
+                "num-rational",
+                "nalgebra",
+                "statrs",
+                "meval"
+            ],
+            "notes": "Define precision, rounding and overflow behavior explicitly."
+        },
+        {
+            "engine_id": "unit_conversion",
+            "name": "Units and Measurement Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "convert",
+                "validate"
+            ],
+            "tools": [
+                "length-converter",
+                "weight-converter",
+                "area-converter",
+                "volume-converter",
+                "temperature-converter",
+                "speed-converter",
+                "time-converter",
+                "pressure-converter",
+                "energy-converter",
+                "power-converter",
+                "data-size-converter",
+                "fuel-economy-converter",
+                "angle-converter",
+                "force-converter",
+                "density-converter",
+                "frequency-converter",
+                "torque-converter",
+                "cooking-unit-converter",
+                "shoe-size-converter",
+                "paper-size-converter"
+            ],
+            "rust_crates_candidates": [
+                "uom"
+            ],
+            "notes": "Keep conversion factors and unit definitions tested and versioned."
+        },
+        {
+            "engine_id": "finance",
+            "name": "General Finance Calculator Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "calculate",
+                "amortize",
+                "project"
+            ],
+            "tools": [
+                "loan-emi-calculator",
+                "mortgage-calculator",
+                "interest-calculator",
+                "compound-interest-calculator",
+                "simple-interest-calculator",
+                "sip-calculator",
+                "lumpsum-calculator",
+                "mutual-fund-return-calculator",
+                "fd-calculator",
+                "rd-calculator",
+                "ppf-calculator",
+                "inflation-calculator",
+                "cagr-calculator",
+                "roi-calculator",
+                "irr-calculator",
+                "npv-calculator",
+                "discount-calculator",
+                "markup-calculator",
+                "profit-margin-calculator",
+                "break-even-calculator",
+                "salary-calculator",
+                "hourly-to-salary-calculator",
+                "currency-converter",
+                "tip-calculator",
+                "tax-bracket-calculator"
+            ],
+            "rust_crates_candidates": [
+                "decimal",
+                "rust_decimal",
+                "chrono"
+            ],
+            "notes": "Use decimal arithmetic for currency. Currency rates and tax rates require separately sourced, timestamped data."
+        },
+        {
+            "engine_id": "india_tax_gst",
+            "name": "India GST and Tax Rules Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "calculate",
+                "validate",
+                "reconcile",
+                "generate"
+            ],
+            "tools": [
+                "gst-calculator",
+                "gst-inclusive-exclusive-calculator",
+                "gst-invoice-validator",
+                "gstin-format-validator",
+                "hsn-sac-lookup",
+                "gst-rate-calculator",
+                "input-tax-credit-calculator",
+                "gstr-data-validator",
+                "invoice-number-validator",
+                "tds-calculator",
+                "income-tax-estimator",
+                "salary-in-hand-calculator",
+                "professional-tax-calculator",
+                "capital-gains-estimator",
+                "bank-statement-cleaner",
+                "bank-statement-to-csv",
+                "bank-statement-to-tally",
+                "purchase-register-reconciliation",
+                "sales-register-reconciliation"
+            ],
+            "rust_crates_candidates": [
+                "rust_decimal",
+                "chrono",
+                "csv",
+                "calamine"
+            ],
+            "notes": "Rules must be configuration/data driven, jurisdiction-specific, date-effective and reviewed against official sources. Do not hardcode unverified current rates."
+        },
+        {
+            "engine_id": "construction",
+            "name": "Construction Estimation Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "estimate",
+                "calculate",
+                "convert"
+            ],
+            "tools": [
+                "cement-calculator",
+                "concrete-calculator",
+                "sand-calculator",
+                "aggregate-calculator",
+                "brick-calculator",
+                "block-calculator",
+                "mortar-calculator",
+                "plaster-calculator",
+                "paint-calculator",
+                "tile-calculator",
+                "flooring-calculator",
+                "roofing-calculator",
+                "steel-weight-calculator",
+                "rebar-calculator",
+                "excavation-calculator",
+                "wall-area-calculator",
+                "staircase-calculator",
+                "paver-calculator",
+                "water-tank-capacity-calculator",
+                "construction-cost-estimator"
+            ],
+            "rust_crates_candidates": [
+                "rust_decimal",
+                "uom"
+            ],
+            "notes": "Expose assumptions, wastage percentages, units and regional defaults to users."
+        },
+        {
+            "engine_id": "solar_energy",
+            "name": "Solar and Energy Estimation Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "size",
+                "estimate",
+                "calculate"
+            ],
+            "tools": [
+                "solar-panel-size-calculator",
+                "solar-roi-calculator",
+                "solar-savings-calculator",
+                "solar-roof-area-calculator",
+                "solar-battery-sizing",
+                "inverter-sizing-calculator",
+                "backup-time-calculator",
+                "electricity-bill-calculator",
+                "appliance-energy-calculator",
+                "electricity-unit-cost-calculator",
+                "carbon-footprint-estimator"
+            ],
+            "rust_crates_candidates": [
+                "rust_decimal",
+                "chrono"
+            ],
+            "notes": "Location-specific irradiance, tariff and incentive data should be provided by a separate data service."
+        },
+        {
+            "engine_id": "date_time",
+            "name": "Date and Time Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "parse",
+                "format",
+                "calculate",
+                "convert"
+            ],
+            "tools": [
+                "date-difference-calculator",
+                "date-add-subtract",
+                "age-calculator",
+                "time-zone-converter",
+                "unix-timestamp-converter",
+                "timestamp-to-date",
+                "date-to-timestamp",
+                "business-days-calculator",
+                "working-days-calculator",
+                "week-number-calculator",
+                "countdown-calculator",
+                "stopwatch",
+                "pomodoro-timer",
+                "calendar-generator",
+                "meeting-time-planner",
+                "cron-next-run"
+            ],
+            "rust_crates_candidates": [
+                "chrono",
+                "chrono-tz",
+                "time"
+            ],
+            "notes": "Use IANA timezone data and handle daylight-saving transitions."
+        },
+        {
+            "engine_id": "color_design",
+            "name": "Color and Design Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "convert",
+                "generate",
+                "analyze"
+            ],
+            "tools": [
+                "hex-to-rgb",
+                "rgb-to-hex",
+                "rgb-to-hsl",
+                "hsl-to-rgb",
+                "color-picker",
+                "color-palette-generator",
+                "gradient-generator",
+                "gradient-css-generator",
+                "contrast-checker",
+                "accessible-color-pairing",
+                "color-blindness-simulator",
+                "image-palette-extractor",
+                "shadow-generator",
+                "border-radius-generator",
+                "css-unit-converter",
+                "spacing-scale-generator",
+                "typography-scale-generator",
+                "favicon-preview",
+                "social-image-dimension-checker"
+            ],
+            "rust_crates_candidates": [
+                "palette"
+            ],
+            "notes": "Many tools are better implemented in native JavaScript/CSS; image palette extraction can reuse the image engine."
+        },
+        {
+            "engine_id": "seo",
+            "name": "SEO Analysis Engine",
+            "runtime": "javascript",
+            "priority": "P1",
+            "capabilities": [
+                "inspect",
+                "analyze",
+                "generate"
+            ],
+            "tools": [
+                "meta-tag-generator",
+                "robots-txt-generator",
+                "sitemap-generator",
+                "canonical-checker",
+                "open-graph-preview",
+                "twitter-card-preview",
+                "structured-data-generator",
+                "schema-validator",
+                "keyword-density-checker",
+                "word-count-seo",
+                "serp-snippet-preview",
+                "hreflang-generator",
+                "redirect-checker",
+                "http-header-checker",
+                "broken-link-checker",
+                "page-title-checker",
+                "meta-description-checker",
+                "image-alt-audit",
+                "heading-structure-checker"
+            ],
+            "notes": "URL crawling and cross-origin inspection generally require a backend fetch/proxy. Keep static text analysis in browser."
+        },
+        {
+            "engine_id": "network",
+            "name": "Network and HTTP Utilities",
+            "runtime": "javascript",
+            "priority": "P1",
+            "capabilities": [
+                "inspect",
+                "test",
+                "parse"
+            ],
+            "tools": [
+                "http-request-builder",
+                "api-client",
+                "websocket-tester",
+                "dns-lookup",
+                "ip-address-lookup",
+                "ip-subnet-calculator",
+                "cidr-calculator",
+                "port-reference",
+                "http-status-checker",
+                "header-inspector",
+                "user-agent-parser",
+                "url-checker",
+                "latency-tester",
+                "bandwidth-estimator",
+                "cors-checker",
+                "tls-certificate-inspector"
+            ],
+            "notes": "Browser sandbox and CORS restrict arbitrary network access. DNS, port scanning, TLS and public IP checks need a backend service; avoid exposing unsafe scanning."
+        },
+        {
+            "engine_id": "qr_barcode",
+            "name": "QR Code and Barcode Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "generate",
+                "decode",
+                "validate"
+            ],
+            "tools": [
+                "qr-code-generator",
+                "qr-code-reader",
+                "barcode-generator",
+                "barcode-reader",
+                "wifi-qr-generator",
+                "vcard-qr-generator",
+                "url-qr-generator",
+                "bulk-qr-generator",
+                "qr-code-styler",
+                "qr-code-to-svg",
+                "qr-code-to-png"
+            ],
+            "rust_crates_candidates": [
+                "qrcode",
+                "rqrr",
+                "bardecoder"
+            ],
+            "notes": "Use image engine for raster export and image preprocessing."
+        },
+        {
+            "engine_id": "font",
+            "name": "Font and Typography Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "inspect",
+                "convert",
+                "subset",
+                "preview"
+            ],
+            "tools": [
+                "font-metadata-viewer",
+                "font-preview",
+                "font-pairing-tool",
+                "font-converter",
+                "woff-to-ttf",
+                "ttf-to-woff",
+                "otf-inspector",
+                "font-subsetter",
+                "font-character-map",
+                "font-size-checker"
+            ],
+            "rust_crates_candidates": [
+                "ttf-parser",
+                "fontdue",
+                " skrifa"
+            ],
+            "notes": "Font conversion and subsetting require careful licensing and format support."
+        },
+        {
+            "engine_id": "ebook",
+            "name": "E-book Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "convert",
+                "inspect"
+            ],
+            "tools": [
+                "epub-reader",
+                "epub-to-pdf",
+                "epub-to-html",
+                "mobi-metadata-viewer",
+                "ebook-metadata-editor",
+                "ebook-cover-extractor",
+                "ebook-format-converter",
+                "epub-validator"
+            ],
+            "rust_crates_candidates": [
+                "zip",
+                "quick-xml",
+                "html5ever"
+            ],
+            "notes": "DRM removal is out of scope. Some formats may require separate licensed dependencies."
+        },
+        {
+            "engine_id": "3d",
+            "name": "3D Model and Geometry Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "convert",
+                "inspect",
+                "transform"
+            ],
+            "tools": [
+                "stl-viewer",
+                "stl-to-obj",
+                "obj-to-stl",
+                "gltf-viewer",
+                "glb-to-gltf",
+                "gltf-optimizer",
+                "mesh-inspector",
+                "mesh-volume-calculator",
+                "mesh-scale",
+                "mesh-rotate",
+                "mesh-repair-basic",
+                "3d-model-thumbnail",
+                "point-cloud-viewer"
+            ],
+            "rust_crates_candidates": [
+                "gltf",
+                "stl_io",
+                "meshopt"
+            ],
+            "notes": "Large meshes require streaming/worker processing. Complex CAD conversion is likely a separate native/backend capability."
+        },
+        {
+            "engine_id": "gis_geo",
+            "name": "GIS and Geospatial Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "convert",
+                "calculate",
+                "inspect"
+            ],
+            "tools": [
+                "geojson-formatter",
+                "geojson-validator",
+                "geojson-to-csv",
+                "csv-to-geojson",
+                "geojson-to-kml",
+                "kml-to-geojson",
+                "wkt-viewer",
+                "coordinate-converter",
+                "distance-between-coordinates",
+                "area-from-coordinates",
+                "geojson-simplifier",
+                "geojson-bbox",
+                "geohash-encoder-decoder",
+                "utm-latlon-converter"
+            ],
+            "rust_crates_candidates": [
+                "geo",
+                "geojson",
+                "proj (WASM compatibility to verify)"
+            ],
+            "notes": "Coordinate reference systems and geodesic assumptions must be explicit."
+        },
+        {
+            "engine_id": "document",
+            "name": "Office Document Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "generate",
+                "convert",
+                "inspect"
+            ],
+            "tools": [
+                "docx-to-pdf",
+                "docx-to-html",
+                "docx-to-text",
+                "docx-metadata-viewer",
+                "docx-template-fill",
+                "odt-to-docx",
+                "rtf-to-text",
+                "rtf-to-html",
+                "pptx-to-pdf",
+                "pptx-to-images",
+                "pptx-metadata-viewer",
+                "docx-to-markdown",
+                "markdown-to-docx"
+            ],
+            "rust_crates_candidates": [
+                "docx-rs",
+                "zip",
+                "quick-xml"
+            ],
+            "notes": "High-fidelity Office rendering may require browser/third-party services; clearly state fidelity limits."
+        },
+        {
+            "engine_id": "ai_local",
+            "name": "Local AI Inference Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "inference",
+                "embedding",
+                "classification"
+            ],
+            "tools": [
+                "text-summarizer-local",
+                "text-classifier-local",
+                "sentiment-analyzer-local",
+                "keyword-extractor-local",
+                "language-detector-local",
+                "text-embedding-local",
+                "image-classifier-local",
+                "background-removal-local",
+                "speech-to-text-local"
+            ],
+            "rust_crates_candidates": [
+                "ort",
+                "candle",
+                "tokenizers"
+            ],
+            "notes": "Model weights are separate large assets. Prefer WebGPU where supported and offer a clear fallback. Never imply private data leaves device if it does."
+        },
+        {
+            "engine_id": "speech",
+            "name": "Speech and Voice Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "transcribe",
+                "synthesize",
+                "analyze"
+            ],
+            "tools": [
+                "speech-to-text",
+                "text-to-speech",
+                "audio-transcription",
+                "subtitle-from-audio",
+                "voice-activity-detection",
+                "speech-rate-analyzer",
+                "pronunciation-practice"
+            ],
+            "rust_crates_candidates": [
+                "whisper.cpp WASM integration",
+                "ort"
+            ],
+            "notes": "Large models and browser memory requirements need explicit download and device checks."
+        },
+        {
+            "engine_id": "business",
+            "name": "Business Operations Calculator Engine",
+            "runtime": "wasm",
+            "priority": "P1",
+            "capabilities": [
+                "calculate",
+                "estimate",
+                "generate"
+            ],
+            "tools": [
+                "invoice-generator",
+                "quotation-generator",
+                "purchase-order-generator",
+                "profit-loss-calculator",
+                "markup-margin-calculator",
+                "inventory-turnover-calculator",
+                "stock-reorder-calculator",
+                "discount-pricing-calculator",
+                "sales-tax-calculator",
+                "commission-calculator",
+                "payroll-estimator",
+                "cash-flow-forecast",
+                "break-even-analysis",
+                "business-valuation-estimator",
+                "unit-economics-calculator"
+            ],
+            "rust_crates_candidates": [
+                "rust_decimal",
+                "chrono"
+            ],
+            "notes": "Templates and regional rules should be data-driven. PDF export can reuse the PDF/document engine."
+        },
+        {
+            "engine_id": "education",
+            "name": "Education and Learning Engine",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "generate",
+                "calculate",
+                "practice"
+            ],
+            "tools": [
+                "flashcard-generator",
+                "quiz-generator",
+                "random-question-picker",
+                "grade-calculator",
+                "gpa-calculator",
+                "study-time-planner",
+                "reading-level-checker",
+                "citation-generator",
+                "equation-practice",
+                "multiplication-table-generator",
+                "periodic-table-explorer",
+                "physics-formula-calculator"
+            ],
+            "notes": "Mostly UI and lightweight logic; use shared math, text and date engines."
+        },
+        {
+            "engine_id": "productivity",
+            "name": "Productivity and Planning Engine",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "organize",
+                "plan",
+                "export"
+            ],
+            "tools": [
+                "todo-list",
+                "kanban-board",
+                "pomodoro-timer",
+                "habit-tracker",
+                "daily-planner",
+                "weekly-planner",
+                "meeting-agenda-generator",
+                "decision-matrix",
+                " Eisenhower-matrix",
+                "mind-map-editor",
+                "checklist-maker",
+                "notes-editor",
+                "markdown-editor",
+                "passwordless-local-notes",
+                "text-snippet-manager"
+            ],
+            "notes": "Use IndexedDB/local storage with explicit export/import and privacy controls."
+        },
+        {
+            "engine_id": "social_creator",
+            "name": "Social Media and Creator Utilities",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "generate",
+                "preview",
+                "validate"
+            ],
+            "tools": [
+                "youtube-thumbnail-resizer",
+                "youtube-title-counter",
+                "youtube-description-preview",
+                "youtube-tag-generator",
+                "social-post-counter",
+                "instagram-caption-counter",
+                "hashtag-generator",
+                "tiktok-video-dimension-checker",
+                "social-image-resizer",
+                "og-image-preview",
+                "bio-link-page-preview",
+                "subtitle-character-counter"
+            ],
+            "notes": "Avoid platform API dependencies for basic utilities; keep platform constraints configurable and dated."
+        },
+        {
+            "engine_id": "browser_capture",
+            "name": "Browser-native Capture and Media Utilities",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "capture",
+                "record",
+                "preview"
+            ],
+            "tools": [
+                "screen-recorder",
+                "webcam-recorder",
+                "microphone-recorder",
+                "webcam-mirror",
+                "camera-photo-capture",
+                "color-picker-screen",
+                "image-to-data-url",
+                "audio-recorder",
+                "video-frame-capture"
+            ],
+            "notes": "Use MediaDevices, MediaRecorder, Canvas and browser permissions. No WASM required for core capture."
+        },
+        {
+            "engine_id": "web_accessibility",
+            "name": "Accessibility Inspection Engine",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "audit",
+                "inspect",
+                "report"
+            ],
+            "tools": [
+                "contrast-audit",
+                "heading-order-audit",
+                "alt-text-audit",
+                "form-label-audit",
+                "keyboard-navigation-checklist",
+                "aria-inspector",
+                "landmark-inspector",
+                "accessibility-report-generator"
+            ],
+            "notes": "Current-page DOM audits can run in browser; auditing arbitrary remote sites requires backend crawling."
+        },
+        {
+            "engine_id": "seo_crawler",
+            "name": "Website Crawler and Audit Service",
+            "runtime": "backend",
+            "priority": "P2",
+            "capabilities": [
+                "crawl",
+                "fetch",
+                "audit",
+                "report"
+            ],
+            "tools": [
+                "website-crawler",
+                "site-broken-link-checker",
+                "full-site-seo-audit",
+                "robots-crawler-test",
+                "sitemap-url-checker",
+                "redirect-chain-audit",
+                "page-speed-audit",
+                "ssl-expiry-check"
+            ],
+            "notes": "Not a browser WASM engine. Run server-side with strict SSRF protection, DNS/IP validation, rate limits and crawl limits."
+        },
+        {
+            "engine_id": "data_visualization",
+            "name": "Data Visualization Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "aggregate",
+                "transform",
+                "chart-data"
+            ],
+            "tools": [
+                "csv-chart-generator",
+                "json-chart-generator",
+                "histogram-generator",
+                "frequency-distribution",
+                "pivot-table-lite",
+                "data-profiler",
+                "descriptive-statistics",
+                "outlier-detector",
+                "data-sampler"
+            ],
+            "rust_crates_candidates": [
+                "polars",
+                "arrow",
+                "statrs"
+            ],
+            "notes": "Consider JavaScript chart rendering with Rust/WASM for large-data aggregation."
+        },
+        {
+            "engine_id": "password_security",
+            "name": "Password and Security Helpers",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "generate",
+                "estimate",
+                "inspect"
+            ],
+            "tools": [
+                "password-generator-ui",
+                "passphrase-generator",
+                "password-strength-meter",
+                "random-token-generator",
+                "secure-random-generator",
+                "privacy-checklist"
+            ],
+            "notes": "Use crypto.getRandomValues; do not use Math.random for security-sensitive randomness."
+        },
+        {
+            "engine_id": "calendar",
+            "name": "Calendar and Scheduling Engine",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "generate",
+                "schedule"
+            ],
+            "tools": [
+                "ics-viewer",
+                "ics-generator",
+                "ics-to-csv",
+                "csv-to-ics",
+                "calendar-date-picker",
+                "availability-overlap-calculator",
+                "shift-scheduler",
+                "event-countdown"
+            ],
+            "notes": "Reuse date_time engine and preserve timezone information."
+        },
+        {
+            "engine_id": "barcode_labels",
+            "name": "Label and Print Layout Engine",
+            "runtime": "wasm",
+            "priority": "P2",
+            "capabilities": [
+                "layout",
+                "generate",
+                "export"
+            ],
+            "tools": [
+                "barcode-label-maker",
+                "shipping-label-maker",
+                "address-label-maker",
+                "qr-label-sheet-generator",
+                "printable-sticker-sheet"
+            ],
+            "notes": "Reuse QR/barcode and PDF engines; account for print margins and physical dimensions."
+        },
+        {
+            "engine_id": "email",
+            "name": "Email and Communication Utilities",
+            "runtime": "javascript",
+            "priority": "P2",
+            "capabilities": [
+                "parse",
+                "validate",
+                "generate"
+            ],
+            "tools": [
+                "email-validator",
+                "email-header-parser",
+                "email-signature-generator",
+                "mailto-link-generator",
+                "email-subject-line-counter",
+                "email-text-cleaner"
+            ],
+            "notes": "DNS/MX validation requires backend lookup; syntax validation can run in browser."
+        }
+    ],
+    "implementation_rules": {
+        "wasm_target": "wasm32-unknown-unknown",
+        "bindings": "Use the existing project's WASM/JS binding mechanism; otherwise wasm-bindgen",
+        "execution": "Run CPU-intensive operations in Web Workers",
+        "large_files": "Use chunked/streaming processing where supported; avoid unnecessary copies",
+        "progress": "Expose progress for long-running operations where meaningful",
+        "cancellation": "Support cooperative cancellation where possible",
+        "errors": "Return structured errors with stable error codes and actionable messages",
+        "testing": "Unit tests, WASM build tests, browser integration tests, malformed-input tests and output correctness tests",
+        "security": "Validate inputs, pin dependencies, verify artifact hashes, avoid eval/dynamic code execution and use restrictive CSP",
+        "licensing": "Review all dependency and codec/model licenses before shipping"
+    },
+    "manifest_example": {
+        "tool_id": "image-resize",
+        "engine_id": "image",
+        "engine_version": "1.0.0",
+        "runtime": "wasm",
+        "entrypoint": "image_resize",
+        "worker_required": true,
+        "input_schema": {
+            "type": "object",
+            "required": [
+                "file",
+                "width",
+                "height"
+            ],
+            "properties": {
+                "file": {
+                    "type": "binary"
+                },
+                "width": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "height": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maintain_aspect_ratio": {
+                    "type": "boolean",
+                    "default": true
+                }
+            }
+        },
+        "output_schema": {
+            "type": "binary",
+            "media_type": "image/*"
+        },
+        "supports_progress": true,
+        "supports_cancellation": true
+    },
+    "build_strategy": [
+        "Reconcile this catalog against the actual tool registry; do not assume every listed tool already exists.",
+        "Group tools by shared engine and identify duplicate capabilities.",
+        "Implement and validate one P0 engine end-to-end before scaling.",
+        "Build P1 engines in dependency-aware batches.",
+        "Implement P2 engines only after verifying tool demand and technical feasibility.",
+        "Generate manifests and registry entries from a single source of truth.",
+        "Report implemented, partial, unsupported and not-yet-started tools separately."
+    ]
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ToolDefinition",
+  "type": "object",
+  "required": ["id", "name", "slug", "category", "description", "status"],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string" },
+    "slug": { "type": "string" },
+    "category": { "type": "string" },
+    "description": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["available", "coming-soon", "deprecated"]
+    },
+    "version": { "type": "string" },
+    "execution": {
+      "type": "string",
+      "enum": ["client", "worker", "server", "hybrid"]
+    },
+    "ui": {
+      "type": "object",
+      "properties": {
+        "component": { "type": "string" },
+        "lazy": { "type": "boolean" }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "version": { "type": "string" },
+        "type": { "type": "string", "enum": ["wasm", "js", "webgl", "webgpu"] },
+        "url": { "type": "string" },
+        "hash": { "type": "string" },
+        "worker": { "type": "string" }
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "icon": { "type": "string" }
+  }
+}
+

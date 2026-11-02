@@ -1,0 +1,15 @@
+[package]
+name = "color-core"
+version = "1.0.0"
+edition = "2021"
+description = "Shared colour maths (parsing, conversions, WCAG contrast, harmonies) used by the developer and colour-design engines."
+
+[lib]
+crate-type = ["rlib"]
+
+[dependencies]
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+
+[lints]
+workspace = true

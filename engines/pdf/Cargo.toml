@@ -1,0 +1,38 @@
+[package]
+name = "pdf-engine"
+version = "2.0.0"
+edition = "2021"
+description = "Dev Toolbox PDF engine: parse, inspect, modify, secure and generate PDF documents entirely in WebAssembly."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+engine-shared = { path = "../shared" }
+# Pure Rust PDF object model with encryption support (RC4 / AES-128 / AES-256).
+lopdf = { version = "0.46", default-features = false }
+# Used to decode PNG/JPEG/GIF/WebP/BMP for images-to-pdf and to re-encode
+# extracted / grayscaled raster images.
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp"] }
+# Markdown -> PDF / HTML -> PDF block parsing.
+pulldown-cmark = { version = "0.13", default-features = false }
+# Text diffing for pdf-compare.
+similar = "2"
+# Deflate streams for generated PDFs and the minimal DOCX writer.
+flate2 = { version = "1", default-features = false, features = ["rust_backend"] }
+# Minimal DOCX container writer for pdf-to-docx (text only).
+zip = { version = "2.6", default-features = false, features = ["deflate"] }
+# Same major as lopdf's (needed for the outline API signature).
+indexmap = "2"
+
+[features]
+# Exposes test fixtures (sample documents) to integration tests / other crates.
+testutil = []
+
+[dev-dependencies]
+pdf-engine = { path = ".", features = ["testutil"] }
+
+[lints]
+workspace = true

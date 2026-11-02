@@ -1,0 +1,17 @@
+[package]
+name = "finance-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox finance engine: loans & mortgages with amortisation, interest, SIP/lumpsum/FD/RD/PPF, inflation, CAGR/ROI/IRR/NPV, pricing, salary, tips, tax brackets and currency conversion with caller-supplied rates."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+rust_decimal = { version = "1", default-features = false, features = ["std"] }
+
+[lints]
+workspace = true

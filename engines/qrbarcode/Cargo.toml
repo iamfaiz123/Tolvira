@@ -1,0 +1,19 @@
+[package]
+name = "qrbarcode-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox QR & barcode engine: QR generation (SVG/PNG, styling, WiFi/vCard/URL payloads, bulk), QR decoding from images, 1D barcode generation (EAN/UPC/Code128/Code39/ITF/Codabar) and check-digit validation."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+qrcode = { version = "0.14", default-features = false }
+rqrr = "0.9"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp"] }
+
+[lints]
+workspace = true

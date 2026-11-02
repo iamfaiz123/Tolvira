@@ -1,0 +1,16 @@
+[package]
+name = "business-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox business operations engine: invoices, quotations, purchase orders, P&L, markup/margin, inventory turnover, reorder points, discount pricing, sales tax, commission, payroll, cash-flow forecast, break-even, valuation and unit economics."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+
+[lints]
+workspace = true

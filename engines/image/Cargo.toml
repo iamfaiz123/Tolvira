@@ -1,0 +1,30 @@
+[package]
+name = "image-engine"
+version = "2.0.0"
+edition = "2021"
+description = "Dev Toolbox image engine: decode, transform, filter, analyse and encode raster images (plus SVG rasterisation) in WebAssembly."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+engine-shared = { path = "../shared" }
+# Pure Rust codecs: PNG, JPEG, GIF, WebP (decode + lossless encode), BMP, ICO, TIFF.
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp", "ico", "tiff"] }
+# EXIF parsing for JPEG / TIFF / PNG / WebP containers.
+kamadak-exif = "0.6"
+# TrueType rasterisation for watermark / label text (embedded DejaVu subset).
+ab_glyph = "0.2"
+# SVG parsing + rasterisation (no system fonts / text shaping to keep the binary small).
+resvg = { version = "0.45", default-features = false, features = ["raster-images"] }
+
+[features]
+testutil = []
+
+[dev-dependencies]
+image-engine = { path = ".", features = ["testutil"] }
+
+[lints]
+workspace = true

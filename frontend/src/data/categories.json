@@ -1,0 +1,74 @@
+[
+  {
+    "name": "PDF & Documents",
+    "description": "Merge, convert, protect, and manage documents."
+  },
+  {
+    "name": "Image Tools",
+    "description": "Edit, convert, and inspect images."
+  },
+  {
+    "name": "Video Tools",
+    "description": "Prepare, convert, and inspect video."
+  },
+  {
+    "name": "Audio Tools",
+    "description": "Convert, edit, and inspect audio."
+  },
+  {
+    "name": "Text Tools",
+    "description": "Write, compare, and transform text."
+  },
+  {
+    "name": "Developer Tools",
+    "description": "Format data, generate code utilities, and work with developer formats."
+  },
+  {
+    "name": "Calculators & Converters",
+    "description": "Everyday calculators, conversions, and measurements."
+  },
+  {
+    "name": "Productivity",
+    "description": "Lightweight planning and productivity helpers."
+  },
+  {
+    "name": "File Tools",
+    "description": "Inspect, organize, and convert files."
+  },
+  {
+    "name": "Security & Network",
+    "description": "Security, privacy, DNS, network, and API utilities."
+  },
+  {
+    "name": "Design Tools",
+    "description": "Color, typography, CSS, icons, and design helpers."
+  },
+  {
+    "name": "SEO & Website",
+    "description": "Audit and prepare metadata and website content."
+  },
+  {
+    "name": "Math Tools",
+    "description": "Solve equations and explore mathematical ideas."
+  },
+  {
+    "name": "AI Tools",
+    "description": "AI-assisted writing, media, and coding utilities."
+  },
+  {
+    "name": "Social Media",
+    "description": "Create and format social media assets and content."
+  },
+  {
+    "name": "Developer Tools",
+    "description": "API, database, versioning, and developer workflow utilities."
+  },
+  {
+    "name": "Everyday Tools",
+    "description": "Simple helpers for home, travel, and daily planning."
+  },
+  {
+    "name": "Creative Tools",
+    "description": "Create diagrams, media, documents, and code in your browser."
+  }
+]

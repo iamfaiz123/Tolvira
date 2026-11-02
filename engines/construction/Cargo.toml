@@ -1,0 +1,16 @@
+[package]
+name = "construction-engine"
+version = "1.0.0"
+edition = "2021"
+description = "Dev Toolbox construction estimation engine: concrete, cement/sand/aggregate, bricks, blocks, mortar, plaster, paint, tiles, flooring, roofing, steel, rebar, excavation, walls, stairs, pavers, tanks and cost estimates with explicit assumptions."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+engine-shared = { path = "../shared" }
+
+[lints]
+workspace = true

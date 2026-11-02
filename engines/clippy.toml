@@ -1,0 +1,7 @@
+# Clippy configuration for the engine workspace (see Cargo.toml [workspace.lints]).
+# Unit tests and integration tests may use unwrap/expect/panic freely.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+allow-dbg-in-tests = true
+allow-print-in-tests = true
